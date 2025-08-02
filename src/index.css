@@ -60,25 +60,56 @@ body {
   height: 80px;
 }
 
+
 .mole-head {
   position: absolute;
   top: 75%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scaleY(0);
   width: 136px;
   height: 116px;
   object-fit: contain;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.5s ease;
+  /* Add transition for transform */
+  transition: opacity 0.5s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .appear {
   opacity: 1;
+  /* Animate pop up */
+  animation: mole-pop-up 0.4s forwards;
+}
+
+
+@keyframes mole-pop-up {
+  0% {
+    transform: translate(-50%, -50%) scaleY(0);
+  }
+  80% {
+    transform: translate(-50%, -60%) scaleY(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+}
+
+@keyframes mole-go-down {
+  0% {
+    transform: translate(-50%, -50%) scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 50%) scaleY(0);
+    opacity: 0;
+  }
 }
 
 .disappear {
   opacity: 0;
+  /* Animate go down slowly */
+  animation: mole-go-down 0.8s forwards;
 }
 
 .mole-hill {

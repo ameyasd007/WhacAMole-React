@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import moleHead from "./assets/moleHead.png";
+import moleHeadHit from "./assets/moleHeadHit.png";
 import MoleHill from "./components/MoleHill";
 import ScoreBoard from "./components/ScoreBoard";
 import { useState, useEffect } from "react";
@@ -11,6 +12,8 @@ function Whackamole({ rows, columns, timer }) {
   const [score, setScore] = useState(null);
   const [hideMole1, setHideMole1] = useState(false);
   const [hideMole2, setHideMole2] = useState(false);
+  const [mole1Hit, setMole1Hit] = useState(false);
+  const [mole2Hit, setMole2Hit] = useState(false);
 
   const randomIndex = () => {
     const randomX = Math.floor(Math.random() * rows);
@@ -32,6 +35,8 @@ function Whackamole({ rows, columns, timer }) {
       setMolePosition2(newMolePosition2);
       setHideMole1(false);
       setHideMole2(false);
+      setMole1Hit(false);
+      setMole2Hit(false);
     }
   };
 
@@ -65,20 +70,25 @@ function Whackamole({ rows, columns, timer }) {
     setGameStatus((prev) => !prev);
     setScore(0);
     setTimeLeft(timer);
+    setMole1Hit(false);
+    setMole2Hit(false);
   };
 
   const updateScore = (moleIndex) => {
     setScore((prev) => prev + 1);
     if (moleIndex === 1) {
       setHideMole1(true);
+      setMole1Hit(true);
     } else {
       setHideMole2(true);
+      setMole2Hit(true);
     }
   };
 
   const displayMole = (index1, index2, moleIndex) => {
     const molePosition = moleIndex === 1 ? molePosition1 : molePosition2;
     const hideMole = moleIndex === 1 ? hideMole1 : hideMole2;
+    const moleHit = moleIndex === 1 ? mole1Hit : mole2Hit;
     return (
       gameStatus &&
       molePosition?.x === index1 &&
@@ -87,7 +97,7 @@ function Whackamole({ rows, columns, timer }) {
           <img
             onClick={() => updateScore(moleIndex)}
             className={`mole-head ${hideMole ? "disappear" : "appear"}`}
-            src={moleHead}
+            src={moleHit ? moleHeadHit : moleHead}
             alt="mole"
           />
         </div>
